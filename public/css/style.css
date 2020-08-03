@@ -191,6 +191,11 @@ textarea{
     color: white;
 }
 
+footer{
+  display: flex;
+  flex-wrap: wrap;
+}
+
   /* animacion titulo */
 
   .line-1{
