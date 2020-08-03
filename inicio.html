@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./style.css" rel = "stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Journaling</title>
+</head>
+<body>
+    <header>
+        <h1><p class="line-1 anim-typewriter">Journaling</p></h1>
+ 
+    <ls id="menu">
+        <button
+                    id="qsLoginBtn"
+                    onclick="login()"
+                    class="btn btn-primary btn-margin auth-invisible hidden"
+                  >
+        <button id="profile" disabled><i class="material-icons">person</i></button>
+        <button id="exit"><i class="material-icons">exit_to_app</i></button>
+    </ls>
+    </header>
+    <hr>
+
+    <div class="fechas"> 
+        <ul>
+          <li class="prev"><button id="izquierdo"><i class="material-icons">chevron_left</i></button></li>
+          <li class="dia">Dia de hoy</li>
+          <li class="next"><button id="derecho"><i class="material-icons">chevron_right</i></button></li>
+        </ul>
+    </div>
+
+    <div class="menuText"> 
+        <ul>
+            <div class="share-button">
+                <span class="large material-icons">add</span>
+                <a href="#" ><i class="material-icons">camera_alt</i></a>
+                <a href="#" ><i class="material-icons">assignment_turned_in</i></a>
+              </div>
+        </ul>
+    </div>
+
+    <div id="journalContainer">
+    <textarea id="journalText" placeholder ="   Bienvenido a tu diario..."></textarea>
+    </div>
+    <hr>
+    <footer>
+        <ul>José Marcial</ul>
+        <ul>Guillermo Valles</ul>
+    </footer>
+
+</body>
+</html>
