@@ -68,6 +68,7 @@ const placeJournalItems = (response) => {
     // ya existe un registro del día de hoy
     if (lastItem.createdAt === currDate.split(',')[0]){
       $("#journalText").val(lastItem.content);
+    } else{
     }
   }
 }
@@ -85,9 +86,41 @@ const getJournalItems = async () => {
   })
 }
 
+const searchItems = async (date) => {
+  $.ajax({
+    type: "GET",
+    url: `${root}/journalitems`,
+    headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+    },
+    success: function(res){
+      console.log(res);
+      console.log(date);
+      if(res.items.length > 0){
+        var items = res.items;
+        var desiredText = items.filter(function(elem){
+          elem.createdAt == date;
+        })
+        console.log(desiredText);
+        if (desiredText.length > 0){
+          alert("Se encontró el texto ")
+        } else{
+          alert("No se encontró una entrada para la fecha seleccionada");
+        }
+      }
+    }
+  })
+}
+
 // NEW
 const updateUI = async () => {
   const isAuthenticated = await auth0.isAuthenticated();
+  var time_options = {
+    timeZone: "America/Mexico_City"
+  }
+  var currDate = new Date().toLocaleString([], time_options)
+  $("#picker").val(currDate.split(',')[0]);
   if(isAuthenticated){
     $("#journalText").removeAttr('disabled');
     var user = await auth0.getUser();

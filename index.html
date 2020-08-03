@@ -23,8 +23,8 @@
   <div class="fechas"> 
       <ul>
         <li class="prev"><button id="izquierdo"><i class="material-icons">chevron_left</i></button></li>
-        <input id="picker" type="text" data-role="calendarpicker">
-        <li class="next"><button id="derecho"><i class="material-icons">chevron_right</i></button></li>
+        <input id="picker" type="text" data-role="calendarpicker" data-format="%m/%d/%Y">
+        <li class="next"><button id="search"><i class="material-icons">search</i></button></li>
       </ul>
   </div>
 
@@ -81,6 +81,13 @@
             alert("Se ha guardado correctamente tu información");
           })
       });
+
+      $("#search").click(async function(){
+        var date = $("#picker").val()
+        await searchItems(date);
+      });
+
+      
 
       
     </script>
