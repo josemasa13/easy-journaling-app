@@ -65,21 +65,40 @@
     <script>
       var root = 'https://xp8rloym32.execute-api.us-east-1.amazonaws.com/dev'
       $("#save").click(function(){
-        
-        $.ajax({
-            type: "POST",
-            url: `${root}/journalitems`,
-            data: JSON.stringify({
-                "content": $("#journalText").val()
-            }),
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-          })
-          .done(function (response){
-            alert("Se ha guardado correctamente tu información");
-          })
+        if (reformatDate($("#picker").val()) == reformatDate(currDate)){
+          $.ajax({
+              type: "POST",
+              url: `${root}/journalitems`,
+              data: JSON.stringify({
+                  "content": $("#journalText").val()
+              }),
+              headers: {
+                  "Authorization": `Bearer ${token}`,
+                  "Content-Type": "application/json"
+              }
+            })
+            .done(function (response){
+              alert("Se ha guardado correctamente tu información");
+            })
+        } else if(reformatDate($("#picker").val()) > reformatDate(currDate)){
+          console.log("No puedes guardar entradas para días posteriores a hoy")
+        } else{
+          $.ajax({
+              type: "POST",
+              url: `${root}/journalitems`,
+              data: JSON.stringify({
+                  "content": $("#journalText").val(),
+                  "createdAt": reformatDate($("#picker").val())
+              }),
+              headers: {
+                  "Authorization": `Bearer ${token}`,
+                  "Content-Type": "application/json"
+              }
+            })
+            .done(function (response){
+              alert("Se ha guardado correctamente tu información");
+            })
+        }
       });
 
       $("#search").click(async function(){

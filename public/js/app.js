@@ -2,7 +2,11 @@
 let auth0 = null;
 var token = "";
 var journalItems = [];
-var currDate = new Date();
+var time_options = {
+  timeZone: "America/Mexico_City"
+}
+var currDate = new Date().toLocaleString([], time_options).split(",")[0]
+
 /**
  * Starts the authentication flow
  */
@@ -58,7 +62,8 @@ const configureClient = async () => {
 
 const placeJournalItems = (response) => {
   if(response.items.length > 0){
-    var lastItem = response.items[0];
+    var lastItem = response.items[response.items.length - 1];
+
     //var lastItemdate = new Date(lastItem.createdAt);
     var time_options = {
       timeZone: "America/Mexico_City"
@@ -95,22 +100,61 @@ const searchItems = async (date) => {
         "Content-Type": "application/json"
     },
     success: function(res){
-      console.log(res);
-      console.log(date);
-      if(res.items.length > 0){
-        var items = res.items;
-        var desiredText = items.filter(function(elem){
-          elem.createdAt == date;
-        })
-        console.log(desiredText);
-        if (desiredText.length > 0){
-          alert("Se encontró el texto ")
+      if(reformatDate($("#picker").val()) > reformatDate(currDate)){
+        alert("No puedes seleccionar una fecha mayor al día de hoy");
+        $("#journalText").val("");
+        $("#journalText").attr('disabled', 'disabled');
+      } else{
+        $("#journalText").removeAttr('disabled');
+        if(res.items.length > 0){
+          var items = res.items;
+          var item = "";
+          var newDate = reformatDate(date);
+
+          for(var i = 0; i < items.length; i++){
+            if(items[i].createdAt === newDate){
+              alert("Se ha encontrado el elemento");
+              item = items[i];
+              break;
+            }
+          }
+
+          if(item != ""){
+            $("#journalText").val(item.content);
+          } else{
+            alert("No se encontró ninguna entrada para el día seleccionado");
+            $("#journalText").val("");
+          }
+
+          
         } else{
-          alert("No se encontró una entrada para la fecha seleccionada");
+          if(date <= reformatDate(currDate)){
+            alert("La fecha debe ser igual o menor que el día de hoy");
+          }
+          else if(res.items.length == 0){
+            alert("No existe ningún registro para el día seleccionado, puedes escribir algo desde cero");
+          }
         }
       }
     }
   })
+}
+
+const reformatDate = (date) => {
+  var newDate = date.split("/");
+  var newMonth = newDate[0];
+  var newDay = newDate[1];
+  var newYear = newDate[2];
+  if(newMonth[0] == '0'){
+    newMonth = newMonth[1];
+  }
+
+  if(newDay[0] == '0'){
+    newDay = newDay[1];
+  }
+  newDate = `${newMonth}/${newDay}/${newYear}`;
+
+  return newDate
 }
 
 // NEW
@@ -132,6 +176,8 @@ const updateUI = async () => {
   } else{
     $("#journalText").attr('disabled', 'disabled');
   }
+
+  
 
 };
 
