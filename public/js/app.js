@@ -166,7 +166,12 @@ const updateUI = async () => {
   var currDate = new Date().toLocaleString([], time_options)
   $("#picker").val(currDate.split(',')[0]);
   if(isAuthenticated){
+    $("#profile").hide();
+    $("#journalText").attr('placeholder', 'Bienvenido a tu diario...');
     $("#journalText").removeAttr('disabled');
+    $("#picker").removeAttr('disabled');
+    $("#save").removeAttr('disabled');
+    $("#search").removeAttr('disabled');
     var user = await auth0.getUser();
     token = await auth0.getIdTokenClaims();
     token = token["__raw"];
@@ -174,7 +179,11 @@ const updateUI = async () => {
     var journalItems = await getJournalItems();
 
   } else{
+    $("#picker").attr('disabled', 'disabled');
+    $("#save").attr('disabled', 'disabled');
+    $("#search").attr('disabled', 'disabled');
     $("#journalText").attr('disabled', 'disabled');
+    $("#journalText").attr('placeholder', 'Inicia sesión para empezar a escribir tu diario');
   }
 
   
